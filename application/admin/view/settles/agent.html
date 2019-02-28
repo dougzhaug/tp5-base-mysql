@@ -1,0 +1,212 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+<!--表格css-->
+{include file="slot/DataTables/css" /}
+<!--时间选择器css-->
+{include file="slot/DateRange/css" /}
+<!--下拉框-->
+{include file="slot/Select/css" /}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        代理商结算
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">代理商结算</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-search">
+                        <form id="formSearch" class="form-horizontal" method="POST" action="{:url('settles/agent/index')}">
+
+                            <!--多功能输入框-->
+                            {include
+                            file="slot/InputGroup/input_group"
+                            title_type='search'
+                            field="$inputField" /}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            name="top_agent"
+                            title_type='search'
+                            title='一级代理'
+                            options="$top_agent"
+                            col_sm='3' /}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            name="second_agent"
+                            title_type='search'
+                            title='二级代理'
+                            options="['请选择']"
+                            col_sm='3' /}
+
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            name="type"
+                            title_type='search'
+                            title='结算方式'
+                            options="['请选择','现金','汇款','在线']"
+                            col_sm='3' /}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            name='state'
+                            title_type='search'
+                            title='结算状态'
+                            options="['请选择','成功','失败']"
+                            col_sm='3' /}
+
+                            <!--时间选择器-->
+                            {include
+                            file="slot/DateRange/date_range"
+                            title_type='search'
+                            title='结算时间'/}
+
+                            <div class="search-input col-sm-1">
+                                <button type="button" onclick="doSearch()" id="searchBtn" class="btn btn-block btn-info" value="查询">查询</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+
+                <!--<div class="box-tools">-->
+                <!--<a href="{:url('store/create')}" class="btn bg-aqua margin">添加门店</a>-->
+                <!--</div>-->
+                <!-- /.box-tools -->
+
+                <div class="box-body">
+                    <table id="tables" class="table table-bordered table-striped display" cellspacing="0" data-url="{:url('settles/agent/index')}">
+                        <thead>
+                        <tr>
+                            <th data-name="Id" data-sort="true">ID</th>
+                            <th data-name="AgentName">代理商名称</th>
+                            <th data-name="OrderId">订单号</th>
+                            <th data-name="TradeNo">第三方订单号</th>
+                            <th data-name="Amount">金额</th>
+                            <th data-name="Type">支付方式</th>
+                            <th data-name="FeeType">交易币种</th>
+                            <th data-name="Rate">交易汇率</th>
+                            <th data-name="Scope">结算时间段</th>
+                            <th data-name="SettlesTime">结算时间</th>
+                            <th data-name="">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>代理商名称</th>
+                            <th>订单号</th>
+                            <th>第三方订单号</th>
+                            <th>金额</th>
+                            <th>支付方式</th>
+                            <th>交易币种</th>
+                            <th>交易汇率</th>
+                            <th>结算时间段</th>
+                            <th>结算时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+{/block}
+
+{block name="script"}
+<!--表格js-->
+{include file="slot/DataTables/script"/}
+<!--时间选择器js-->
+{include file="slot/DateRange/script" start_date='' end_date='' date_limit='60'/}
+<!--多功能输入框js-->
+{include file="slot/InputGroup/script"/}
+<!--下拉框js-->
+{include file="slot/Select/script"/}
+<!--省市县三级联动js-->
+{include file="slot/DistPicker/script"/}
+<script>
+
+    /**
+     * DataTables 初始化
+     */
+    var tables = DataTableLoad();
+
+    /**
+     * 重构 操作按钮
+     *
+     * @param data
+     * @param type
+     * @param row
+     * @returns {string}
+     */
+    function getButton(data,type,row)
+    {
+        var html = '';
+        html += '<a href="/settles/agent/read/'+data.Id+'" class="btn btn-success btn-xs data-tables data-tables-show"><span class="fa fa-file-text-o"></span>详情</a>';
+        return html;
+    }
+
+    /**
+     * 代理商联动
+     */
+    $("#top_agent").change(function () {
+        $("#second_agent").html('');
+
+        var top_agent= $("#top_agent").val();
+        if(top_agent == 0){
+            return false;
+        }
+
+        $.ajax({
+            url: "{:url('agent/get_second_agent')}",
+            dataType: "JSON",
+            data: {'id': top_agent},
+            type: "get",
+            success:function (data) {
+                var gradeNum= data.length;
+                var option = "";
+                if(gradeNum>0){
+                    for(var i = 0;i<gradeNum;i++){
+                        option += "<option value='"+data[i].value+"'>"+data[i].name+"</option>";
+                    }
+                }
+                $("#second_agent").html(option);
+                // $("#class").val(Id); //编辑时绑定
+                $("#second_agent").select2({ minimumResultsForSearch: -1 });//加载样式
+            },
+            error:function(e) {
+                alert("系统异常，请稍候重试！");
+            }
+        });
+    });
+
+</script>
+{/block}

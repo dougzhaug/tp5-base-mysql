@@ -1,0 +1,88 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+<!--JsTree css-->
+{include file="slot/JsTree/css"/}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        编辑角色
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">编辑角色</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-info">
+                <!--<div class="box-header with-border">-->
+                <!--<h3 class="box-title">标题</h3>-->
+                <!--</div>-->
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" action="{:url('agent_role/update')}" method="POST" onsubmit="return getPermissions()">
+                    <input type="hidden" name="_method" value="put" />
+                    <input type="hidden" name="Rid" value="{$role.Rid}">
+
+                    <div class="box-body">
+                        <div class="form-group {if hasInputError('RName')} has-error {/if}">
+                            <label>名称</label>
+                            <input name="RName" type="text" class="form-control" placeholder="名称" value="{$role.RName|default=old('RName')}">
+
+                            {if hasInputError('RName')}
+                            <span class="help-block">
+                                    <strong>{:inputError('RName')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+                        <div class="form-group">
+                            <label>描述</label>
+                            <input name="RDescription" type="text" class="form-control" placeholder="描述" value="{$role.RDescription}">
+                        </div>
+
+                        <div class="form-group {if hasInputError('MenuID')} has-error {/if}">
+                            <label>权限</label>
+                            <!--js_tree-->
+                            {include
+                            file="slot/JsTree/js_tree"
+                            name='MenuID'
+                            tree_name='TreeID' /}
+
+                            {if hasInputError('MenuID')}
+                            <span class="help-block">
+                                    <strong>{:inputError('MenuID')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <a class="btn btn-default" href="javaScript:history.back(-1)">取消</a>
+                        <button type="submit" class="btn btn-info pull-right">提交</button>
+                    </div>
+
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+{/block}
+
+{block name="script"}
+
+<!--JsTree js-->
+{include file="slot/JsTree/script" name='js_tree' url="agent_role/get_permissions" url_param="['id'=>$role.Rid]" /}
+
+{/block}

@@ -1,0 +1,12 @@
+<div id="errors_message" class="alert alert-danger alert-dismissible admin-do-alert">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <i class="icon fa fa-ban"></i>
+    {if hasInputError('errors_message')}
+        {:inputError('errors_message')}
+    {/if}
+</div>
+<script>
+    var msg = $('#errors_message');
+    msg.delay(500).fadeIn();
+    msg.delay(3000).fadeOut();
+</script>

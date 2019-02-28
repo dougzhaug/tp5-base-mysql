@@ -1,0 +1,24 @@
+<!--开关按钮-->
+
+<!--
+    必传参数
+    title = '爱好'                       //显示的标题
+    name = 'switch'                     //input名称
+
+    //非必传参数
+    checked = '1'                       //选中状态 0关 1开
+-->
+
+{php}
+    $switch_checked_data = templateParamDefault("[checked]",'checked',old('[name]'));
+    $switch_checked = $switch_checked_data == 'off' || !$switch_checked_data ? 0 : 1;
+{/php}
+
+<div class="form-group">
+    <label>[title]</label>
+    <div class="input-group">
+        <div class="switch">
+            <input name="[name]" type="checkbox" {if $switch_checked} checked="checked" {/if}/>
+        </div>
+    </div>
+</div>

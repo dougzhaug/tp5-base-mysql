@@ -1,0 +1,15 @@
+<!-- bootstrap-switch -->
+<script src="__ADMIN__/bower_components/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+
+<script type="text/javascript">
+    var switch_checked = {$switch_checked|default=0} ? true : false;
+
+    $(function(){
+        $('.switch input').bootstrapSwitch({
+            onText:'开',
+            offText:'关',
+            offColor:'danger',
+        }).bootstrapSwitch('state',switch_checked);
+    })
+
+</script>

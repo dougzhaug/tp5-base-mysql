@@ -1,0 +1,122 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+<!--下拉框css-->
+{include file="slot/Select/css"/}
+<!--开关css-->
+{include file="slot/Switch/css"/}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        编辑管理员
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">编辑管理员</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-info">
+                <!--<div class="box-header with-border">-->
+                <!--<h3 class="box-title">标题</h3>-->
+                <!--</div>-->
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" action="{:url('admin/'.$admin['id'])}" method="post">
+                    <div class="box-body">
+
+                        <input type="hidden" name="_method" value="put" />
+
+                        <div class="form-group {if hasInputError('name')} has-error {/if}">
+                            <label >用户名</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-user"></i>
+                                </div>
+
+                                <input name="name" value="{$admin.name|default=old('name')}" type="text" class="form-control" placeholder="用户名" >
+                            </div>
+                            {if hasInputError('name')}
+                                <span class="help-block">
+                                    <strong>{:inputError('name')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+
+                        <div class="form-group {if hasInputError('password')} has-error {/if}">
+                            <label >密码</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-lock"></i>
+                                </div>
+                                <input name="password" type="password" class="form-control" placeholder="密码">
+                            </div>
+                            {if hasInputError('password')}
+                            <span class="help-block">
+                                    <strong>{:inputError('password')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+
+                        <div class="form-group {if hasInputError('phone')} has-error {/if}">
+                            <label >手机号</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-phone"></i>
+                                </div>
+                                <input name="phone" value="{$admin.phone|default=old('phone')}" type="text" class="form-control">
+                            </div>
+                            {if hasInputError('phone')}
+                            <span class="help-block">
+                                    <strong>{:inputError('phone')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+                        <!--多选下拉框-->
+
+                        {include
+                        file="slot/Select/select"
+                        title='角色'
+                        name='role'
+                        checked="$admin.role"
+                        options="$role" /}
+
+                        <!--开关-->
+                        {include
+                        file="slot/Switch/switch"
+                        title='状态'
+                        checked='$admin.status'
+                        name='status' /}
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <a class="btn btn-default" href="javaScript:history.back(-1)">取消</a>
+                        <button type="submit" class="btn btn-info pull-right">提交</button>
+                    </div>
+
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+{/block}
+
+{block name="script"}
+
+<!--下拉框js-->
+{include file="slot/Select/script"/}
+<!--开关js-->
+{include file="slot/Switch/script"/}
+
+{/block}

@@ -1,0 +1,29 @@
+<script src="__ADMIN__/plugins/Distpicker/js/distpicker.js"></script>
+
+<script>
+    //获取省市区的编码信息
+    $("#dist_picker_province").change(function () {
+        var province = $("#dist_picker_province").find("option:selected").data('code');
+        var city = $("#dist_picker_city").find("option:selected").data('code');
+        var district = $("#dist_picker_district").find("option:selected").data('code');
+        $('#dist_picker_province_code').val(province);
+        $('#dist_picker_city_code').val(city);
+        $('#dist_picker_district_code').val(district);
+    })
+    $('#dist_picker_city').change(function () {
+        var province = $("#dist_picker_province").find("option:selected").data('code');
+        var city = $("#dist_picker_city").find("option:selected").data('code');
+        var district = $("#dist_picker_district").find("option:selected").data('code');
+        $('#dist_picker_province_code').val(province);
+        $('#dist_picker_city_code').val(city);
+        $('#dist_picker_district_code').val(district);
+    })
+    $('#dist_picker_district').change(function () {
+        var province = $("#dist_picker_province").find("option:selected").data('code');
+        var city = $("#dist_picker_city").find("option:selected").data('code');
+        var district = $("#dist_picker_district").find("option:selected").data('code');
+        $('#dist_picker_province_code').val(province);
+        $('#dist_picker_city_code').val(city);
+        $('#dist_picker_district_code').val(district);
+    })
+</script>

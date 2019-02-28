@@ -1,0 +1,105 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+<!--下拉框css-->
+{include file="slot/Select/css"/}
+
+<!--单选框css-->
+{include file="slot/Radio/css"/}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        添加代理商
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">添加代理商</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-info">
+                <!--<div class="box-header with-border">-->
+                <!--<h3 class="box-title">标题</h3>-->
+                <!--</div>-->
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" method="POST" action="{:url('agent_menu/save')}">
+                    <div class="box-body">
+                        <!--普通下拉框-->
+                        {include
+                            file="slot/Select/select"
+                            title='父菜单'
+                            name='ParentID'
+                            selected="$menu_id"
+                            options="$menu" /}
+
+                        <div class="form-group {if hasInputError('Name')} has-error {/if}">
+                            <label for="Name">名称</label>
+                            <input name="Name" type="test" class="form-control" id="Name" placeholder="名称" value="{:old('Name')}">
+                            {if hasInputError('Name')}
+                                <span class="help-block">
+                                    <strong>{:inputError('Name')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Url">Url</label>
+                            <input name="Url" type="text" class="form-control" id="Url" placeholder="Url">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rel">图标</label>
+                            <input name="rel" type="text" class="form-control" id="rel" placeholder="图标">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="IsOrder">排序</label>
+                            <input name="IsOrder" type="text" class="form-control" id="IsOrder" placeholder="排序">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Remark">备注</label>
+                            <input name="Remark" type="text" class="form-control" id="Remark" placeholder="备注">
+                        </div>
+
+                        <!--单选框-->
+                        {include
+                            file="slot/Radio/radio"
+                            type='level'
+                            name="IsMenu"
+                            options="[['name'=>'是','value'=>1],['name'=>'否','value'=>0]]"
+                            checked='1'
+                            title='是否展示' /}
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <a class="btn btn-default" href="javaScript:history.back(-1)">取消</a>
+                        <input type="submit" class="btn btn-info pull-right" value="提交"/>
+                    </div>
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+{/block}
+
+{block name="script"}
+<!--下拉框js-->
+{include file="slot/Select/script"/}
+
+
+<!--单选框js-->
+{include file="slot/Radio/script"/}
+{/block}

@@ -1,0 +1,122 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+<!--下拉框css-->
+{include file="slot/Select/css"/}
+<!--开关css-->
+{include file="slot/Switch/css"/}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        编辑收银员
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">编辑收银员</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-info">
+                <!--<div class="box-header with-border">-->
+                <!--<h3 class="box-title">标题</h3>-->
+                <!--</div>-->
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" action="{:url('/cashier/'.$cashier['Uid'])}" method="post">
+                    <input type="hidden" name="_method" value="put" />
+                    <input type="hidden" name="Uid" value="{$cashier['Uid']}">
+
+                    <div class="box-body">
+
+                        <!--多选下拉框-->
+                        {include
+                        file="slot/Select/select"
+                        title='所属商户'
+                        name='StoreId'
+                        options="$store" /}
+
+                        <div class="form-group {if hasInputError('Uname')} has-error {/if}">
+                            <label >用户名</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <input name="Uname" type="text" class="form-control" placeholder="用户名"  value="{$cashier.Uname|default=old('Uname')}">
+                            </div>
+                            {if hasInputError('Uname')}
+                            <span class="help-block">
+                                    <strong>{:inputError('Uname')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+
+                        <div class="form-group {if hasInputError('Upassword')} has-error {/if}">
+                            <label >密码</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-lock"></i>
+                                </div>
+                                <input name="Upassword" type="password" class="form-control" placeholder="密码" value="{:old('Upassword')}">
+                            </div>
+                            {if hasInputError('Upassword')}
+                            <span class="help-block">
+                                    <strong>{:inputError('Upassword')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+
+                        <div class="form-group {if hasInputError('Uemail')} has-error {/if}">
+                            <label >邮箱</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-envelope"></i>
+                                </div>
+                                <input  name="Uemail" type="text" class="form-control" value="{$cashier.Uemail|default=old('Uemail')}">
+                            </div>
+                            {if hasInputError('Uemail')}
+                            <span class="help-block">
+                                    <strong>{:inputError('Uemail')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+
+                        <!--开关-->
+                        {include
+                        file="slot/Switch/switch"
+                        title='状态'
+                        name='IsState'
+                        checked="$cashier.IsState" /}
+
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <a class="btn btn-default" href="javaScript:history.back(-1)">取消</a>
+                        <button type="submit" class="btn btn-info pull-right">提交</button>
+                    </div>
+
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+{/block}
+
+{block name="script"}
+
+<!--下拉框js-->
+{include file="slot/Select/script"/}
+<!--开关js-->
+{include file="slot/Switch/script"/}
+
+{/block}

@@ -1,0 +1,46 @@
+<!-- Morris.js charts -->
+<script src="__ADMIN__/bower_components/raphael/raphael.min.js"></script>
+<script src="__ADMIN__/bower_components/morris.js/morris.min.js"></script>
+
+<script>
+
+    $(function () {
+        /* Morris.js Charts */
+        // Sales chart
+        var area = new Morris.Area({
+            element   : 'revenue-chart',
+            resize    : true,
+            data      : StatisticsData['QuarterAmountLink']?StatisticsData['QuarterAmountLink']:[
+                { y: '2014 Q1', amount: 2001, volume: 1900 },
+                { y: '2014 Q2', amount: 2551, volume: 2510 },
+                { y: '2014 Q3', amount: 2491, volume: 2410 },
+                { y: '2014 Q4', amount: 2581, volume: 2430 },
+                { y: '2015 Q1', amount: 2601, volume: 2510 },
+                { y: '2015 Q2', amount: 2888, volume: 2705 },
+                { y: '2015 Q3', amount: 3001, volume: 2991 },
+                { y: '2015 Q4', amount: 2905, volume: 2802 },
+                { y: '2016 Q1', amount: 2666, volume: 2666 },
+                { y: '2016 Q2', amount: 2778, volume: 2294 },
+                { y: '2016 Q3', amount: 4912, volume: 1969 },
+                { y: '2016 Q4', amount: 3767, volume: 3597 },
+                { y: '2017 Q1', amount: 6810, volume: 1914 },
+                { y: '2017 Q2', amount: 5670, volume: 4293 },
+                { y: '2017 Q3', amount: 4820, volume: 3795 },
+                { y: '2017 Q4', amount: 15073, volume: 5967 },
+                { y: '2018 Q1', amount: 10687, volume: 4460 },
+                { y: '2018 Q2', amount: 8432, volume: 5713 },
+                { y: '2018 Q3', amount: 10932, volume: 9013 }
+            ],
+            xkey      : 'y',
+            ykeys     : ['amount', 'volume'],
+            labels    : ['交易金额', '交易量'],
+            lineColors: ['#a0d0e0', '#3c8dbc'],
+            hideHover : 'auto'
+        });
+
+        // Fix for charts under tabs
+        $('.box ul.nav a').on('shown.bs.tab', function () {
+            area.redraw();
+        });
+    })
+</script>

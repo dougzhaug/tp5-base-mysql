@@ -1,0 +1,164 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+<!--表格css-->
+{include file="slot/DataTables/css" /}
+<!--时间选择器css-->
+{include file="slot/DateRange/css" /}
+<!--下拉框-->
+{include file="slot/Select/css" /}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        商户列表
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">商户列表</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-search">
+                        <form id="formSearch" class="form-horizontal" method="POST" action="{:url('seller')}">
+                            <!--多功能输入框-->
+                            {include
+                            file="slot/InputGroup/input_group"
+                            title_type='search'
+                            field="$inputField"/}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            title_type='search'
+                            title='公司性质'
+                            name='Nature'
+                            options="[['name'=>'请选择','value'=>0],['name'=>'集团','value'=>1],['name'=>'公司','value'=>2],['name'=>'个体','value'=>3]]" /}
+
+                            <!--时间选择器-->
+                            {include
+                            file="slot/DateRange/date_range"
+                            title_type='search'
+                            name='CreateTime'
+                            title='注册时间'/}
+
+                            <!--省市县三级联动-->
+                            {include
+                            file="slot/DistPicker/dist_picker"
+                            title_type='search'
+                            title=''
+                            province='province'
+                            city='city'
+                            district='district'
+                            col_sm='5'/}
+
+                            <div class="search-input col-sm-1">
+                                <button type="button" onclick="doSearch()" id="searchBtn" class="btn btn-block btn-info" value="查询">查询</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+
+                <div class="box-tools">
+                    <a href="{:url('seller/create')}" class="btn bg-aqua margin">添加商户</a>
+                </div>
+                <!-- /.box-tools -->
+
+                <div class="box-body">
+                    <table id="tables" class="table table-bordered table-striped" data-url="{:url('seller')}">
+                        <thead>
+                        <tr>
+                            <th data-name="ID" data-sort="true">ID</th>
+                            <th data-name="StoreName">名称</th>
+                            <th data-name="AgentId">所属代理商</th>
+                   <!--         <th data-name="country">国家</th>-->
+                            <th data-name="Province">省</th>
+                            <th data-name="City">市</th>
+                            <th data-name="Area">区</th>
+                            <th data-name="Nature">性质</th>
+                            <th data-name="ContactName">联系人</th>
+                            <th data-name="ContactPhone">联系电话</th>
+                            <th data-name="CreateTime">注册时间</th>
+                            <th data-name="IsState">状态</th>
+                            <th  data-name="">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>所属代理商</th>
+                          <!--  <th>国家</th>-->
+                            <th>省</th>
+                            <th>市</th>
+                            <th>区</th>
+                            <th>性质</th>
+                            <th>联系人</th>
+                            <th>联系电话</th>
+                            <th>注册时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+{/block}
+
+{block name="script"}
+<!--表格js-->
+{include file="slot/DataTables/script"/}
+<!--时间选择器js-->
+{include file="slot/DateRange/script" start_date='' end_date='' date_limit='60'/}
+<!--多功能输入框js-->
+{include file="slot/InputGroup/script"/}
+<!--下拉框js-->
+{include file="slot/Select/script"/}
+<!--省市县三级联动js-->
+{include file="slot/DistPicker/script"/}
+<script>
+    /**
+     * DataTables 初始化
+     */
+    var tables = DataTableLoad();
+
+    /**
+     * 重构 操作按钮
+     *
+     * @param data
+     * @param type
+     * @param row
+     * @returns {string}
+     */
+    function getButton(data,type,row)
+    {
+        var html = '';
+        html += '<a href="seller/addstore/'+data.ID+'" class="btn btn-primary btn-xs data-tables data-tables-edit"><span class="glyphicon glyphicon-edit"></span>添加门店</a>';
+        html += '<a href="seller/edit/'+data.ID+'" class="btn btn-primary btn-xs data-tables data-tables-edit"><span class="glyphicon glyphicon-edit"></span>编辑</a>';
+        //html += '<a href="seller/delete/'+data.ID+'" class="btn btn-danger btn-xs data-tables data-tables-delete"><span class="glyphicon glyphicon-trash"></span>删除</a>';
+        html += '<button data-url="seller/delete/'+data.ID+'" onclick="tablesDelete(this)"  class="btn btn-danger btn-xs data-tables data-tables-delete" ><span class="glyphicon glyphicon-trash"></span>删除</button>';
+        return html;
+    }
+</script>
+{/block}

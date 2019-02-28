@@ -1,0 +1,86 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+<!--JsTree css-->
+{include file="slot/JsTree/css"/}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        添加角色
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">添加角色</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-info">
+                <!--<div class="box-header with-border">-->
+                <!--<h3 class="box-title">标题</h3>-->
+                <!--</div>-->
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" action="{:url('role/save')}" method="post" onsubmit="return getPermissions()">
+                    <div class="box-body">
+
+                        <div class="form-group {if hasInputError('name')} has-error {/if}">
+                            <label>名称</label>
+                            <input name="name" type="text" class="form-control" placeholder="名称" value="{:old('name')}">
+
+                            {if hasInputError('name')}
+                            <span class="help-block">
+                                    <strong>{:inputError('name')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+                        <div class="form-group">
+                            <label>描述</label>
+                            <input name="remark" type="text" class="form-control" placeholder="描述">
+                        </div>
+
+                        <div class="form-group {if hasInputError('menu_id')} has-error {/if}">
+                            <label>权限</label>
+                            <!--js_tree-->
+                            {include
+                            file="slot/JsTree/js_tree"
+                            name='menu_id'
+                            tree_name='tree_id' /}
+
+                            {if hasInputError('menu_id')}
+                            <span class="help-block">
+                                    <strong>{:inputError('menu_id')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <a class="btn btn-default" href="javaScript:history.back(-1)">取消</a>
+                        <button type="submit" class="btn btn-info pull-right">提交</button>
+                    </div>
+
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+{/block}
+
+{block name="script"}
+
+<!--JsTree js-->
+{include file="slot/JsTree/script" name='js_tree' url='role/get_permissions' url_param='[]' /}
+
+{/block}

@@ -1,0 +1,152 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+<!--表格css-->
+{include file="slot/DataTables/css" /}
+<!--时间选择器css-->
+{include file="slot/DateRange/css" /}
+<!--下拉框-->
+{include file="slot/Select/css" /}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        结算单
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">结算单</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-search">
+                        <form id="formSearch" class="form-horizontal" method="POST" action="{:url('settlement')}">
+                            <!--多功能输入框-->
+                            {include
+                            file="slot/InputGroup/input_group"
+                            title_type='search'
+                            field="$inputField"/}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            title_type='search'
+                            title='结算方式'
+                            options="[['name'=>'现金','value'=>1],['name'=>'汇款','value'=>2],['name'=>'自动转账','value'=>3]]"
+                            col_sm='4' /}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            title_type='search'
+                            title='结算状态'
+                            options="[['name'=>'成功','value'=>1],['name'=>'失败','value'=>2]]"
+                            col_sm='4' /}
+
+                            <!--时间选择器-->
+                            {include
+                            file="slot/DateRange/date_range"
+                            title_type='search'
+                            title='结算时间'/}
+
+                            <div class="search-input col-sm-1">
+                                <button type="button" onclick="doSearch()" id="searchBtn" class="btn btn-block btn-info" value="查询">查询</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+
+                <!--<div class="box-tools">-->
+                    <!--<a href="{:url('store/create')}" class="btn bg-aqua margin">添加门店</a>-->
+                <!--</div>-->
+                <!-- /.box-tools -->
+
+                <div class="box-body">
+                    <table id="tables" class="table table-bordered table-striped" data-url="{:url('settlement')}">
+                        <thead>
+                        <tr>
+                            <th data-name="id" data-sort="true">ID</th>
+                            <th data-name="agent_name">代理商</th>
+                            <th data-name="create_time">日期</th>
+                            <th data-name="amount_payable">应结金额</th>
+                            <th data-name="settlement_amount">实结金额</th>
+                            <th data-name="poundage">手续费</th>
+                            <th data-name="trading_volume">交易量</th>
+                            <th data-name="settlement_type">结算方式</th>
+                            <th data-name="status">结算状态</th>
+                            <th data-name="">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>代理商</th>
+                            <th>日期</th>
+                            <th>应结金额</th>
+                            <th>实结金额</th>
+                            <th>手续费</th>
+                            <th>交易量</th>
+                            <th>结算方式</th>
+                            <th>结算状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+{/block}
+
+{block name="script"}
+<!--表格js-->
+{include file="slot/DataTables/script"/}
+<!--时间选择器js-->
+{include file="slot/DateRange/script" start_date='' end_date='' date_limit='60'/}
+<!--多功能输入框js-->
+{include file="slot/InputGroup/script"/}
+<!--下拉框js-->
+{include file="slot/Select/script"/}
+<!--省市县三级联动js-->
+{include file="slot/DistPicker/script"/}
+<script>
+    /**
+     * DataTables 初始化
+     */
+    var tables = DataTableLoad();
+
+    /**
+     * 重构 操作按钮
+     *
+     * @param data
+     * @param type
+     * @param row
+     * @returns {string}
+     */
+    function getButton(data,type,row)
+    {
+        var html = '';
+        html += '<a href="settlement/'+data.id+'" class="btn btn-success btn-xs data-tables data-tables-show"><span class="fa fa-file-text-o"></span>详情</a>';
+        return html;
+    }
+</script>
+{/block}

@@ -1,0 +1,28 @@
+<!-- Morris.js charts -->
+<script src="__ADMIN__/bower_components/raphael/raphael.min.js"></script>
+<script src="__ADMIN__/bower_components/morris.js/morris.min.js"></script>
+
+<script>
+
+    $(function () {
+        /* Morris.js Charts */
+        // Donut Chart
+        var donut = new Morris.Donut({
+            element  : 'sales-chart',
+            resize   : true,
+            colors   : ['#3c8dbc', '#f56954', '#00a65a','#f39c12'],
+            data     : StatisticsData['CountryAmountDonut']?StatisticsData['CountryAmountDonut']:[
+                { label: 'Download Sales', value: 12 },
+                { label: 'In-Store Sales', value: 30 },
+                { label: 'Mail-Order Sales', value: 20 },
+                { label: 'User-Order ', value: 38 }
+            ],
+            hideHover: 'auto'
+        });
+
+        // Fix for charts under tabs
+        $('.box ul.nav a').on('shown.bs.tab', function () {
+            donut.redraw();
+        });
+    })
+</script>

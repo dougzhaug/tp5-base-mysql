@@ -1,0 +1,151 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+    <!--下拉框css-->
+    {include file="slot/Select/css"/}
+    <!--开关css-->
+    {include file="slot/Switch/css"/}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        添加代理商管理员
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">添加代理商管理员</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="box box-info">
+                    <!--<div class="box-header with-border">-->
+                    <!--<h3 class="box-title">标题</h3>-->
+                    <!--</div>-->
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form role="form" action="{:url('agent_user/save')}" method="post">
+                        <div class="box-body">
+
+                            <div class="form-group {if hasInputError('Uname')} has-error {/if}">
+                                <label >用户名</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <input name="Uname" type="text" class="form-control" placeholder="用户名" value="{:old('Uname')}">
+                                </div>
+                                {if hasInputError('Uname')}
+                                    <span class="help-block">
+                                        <strong>{:inputError('Uname')}</strong>
+                                    </span>
+                                {/if}
+                            </div>
+
+                            <div class="form-group {if hasInputError('Upassword')} has-error {/if}">
+                                <label >密码</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-lock"></i>
+                                    </div>
+                                    <input name="Upassword" type="password" class="form-control" placeholder="密码">
+                                </div>
+                                {if hasInputError('Upassword')}
+                                    <span class="help-block">
+                                        <strong>{:inputError('Upassword')}</strong>
+                                    </span>
+                                {/if}
+                            </div>
+
+                            <div class="form-group {if hasInputError('Uemail')} has-error {/if}">
+                                <label >邮箱</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-envelope"></i>
+                                    </div>
+                                    <input  name="Uemail" type="text" class="form-control" value="{:old('Uemail')}">
+                                </div>
+                                {if hasInputError('Uemail')}
+                                <span class="help-block">
+                                        <strong>{:inputError('Uemail')}</strong>
+                                    </span>
+                                {/if}
+                            </div>
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            title='角色'
+                            name='Role'
+                            options="$role" /}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            title='所属代理商'
+                            name='AgentId'
+                            options="[]" /}
+
+                            <!--开关-->
+                            {include
+                            file="slot/Switch/switch"
+                            title='状态'
+                            name='IsState' /}
+                        </div>
+                        <!-- /.box-body -->
+
+                        <div class="box-footer">
+                            <a class="btn btn-default" href="javaScript:history.back(-1)">取消</a>
+                            <button type="submit" class="btn btn-info pull-right">提交</button>
+                        </div>
+
+                    </form>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </section>
+{/block}
+
+{block name="script"}
+
+    <!--下拉框js-->
+    {include file="slot/Select/script"/}
+    <!--开关js-->
+    {include file="slot/Switch/script"/}
+
+<script>
+    $(function () {
+        $.ajax({
+            url: "{:url('agent/get_agent_tree_select')}",
+            dataType: "JSON",
+            data: {},
+            type: "get",
+            success:function (data) {
+                var gradeNum= data.length;
+                var option = "";
+                if(gradeNum>0){
+                    for(var i = 0;i<gradeNum;i++){
+                        option += "<option value='"+data[i].value+"'>"+data[i].name+"</option>";
+                    }
+                }
+                $("#AgentId").html(option);
+                // $("#class").val(Id); //编辑时绑定
+                $("#AgentId").select2({ minimumResultsForSearch: -1 });//加载样式
+            },
+            error:function(e) {
+                alert("系统异常，请稍候重试！");
+            }
+        });
+    })
+
+</script>
+
+{/block}

@@ -1,0 +1,75 @@
+<!--下拉框-->
+
+<!--
+    必传参数
+    name = 'name'                    //参数名称
+    title = '爱好'                    //显示的标题
+    options = [                      //下拉数据参数（可为一维数组）
+        [
+            'name'=>'篮球',
+            'value'=>'1'
+        ],
+        [
+            'name'=>'足球',
+            'value'=>'2',
+            'selected'=>1           //默认选中项
+        ]
+    ];
+
+    //非必传参数
+    type                             //#下拉框类型，multiple为多选下拉框
+    title_type                       //#title样式默认为表单样式，当等于search时为搜索框样式
+    checked                          //#默认选中项,多选请使用英文逗号分隔(,)  注：selected可能是关键词无法获取数据
+    col_sm                           //下拉框尺寸参数
+-->
+
+{php}
+    $options = [options];
+    $type = templateParamDefault("[type]",'type');
+    $title_type = templateParamDefault("[title_type]",'title_type');
+    $selected = explode(',',templateParamDefault("[checked]",'checked',old('[name]')));
+    $col_sm = templateParamDefault("[col_sm]",'col_sm',3);
+{/php}
+
+<div class="form-group {if hasInputError('[name]')} has-error {/if} {if $title_type == 'search'} col-sm-{$col_sm} {/if}" style="margin-right: 5px;">
+
+    {if $title_type != 'search'}
+        <label>[title]</label>
+    {/if}
+
+    <div class="input-group">
+
+        {if $title_type == 'search'}
+            <div class="input-group-addon input-title">
+                [title]
+            </div>
+        {/if}
+
+        <select id="[name]" name="{if $type == 'multiple'}[name][]{else /}[name]{/if}" class="form-control select2" {if $type == 'multiple'} multiple="multiple" {/if} >
+            {foreach $options as $k=>$v}
+                {php}
+                    $opt_name = isset($v['name']) ? $v['name'] : $v;
+                    $opt_value = isset($v['value']) ? $v['value'] : $k;
+                {/php}
+
+                <option
+                    {if in_array($opt_value,$selected)}
+                        selected="selected"
+                    {/if}
+                    {if isset($v['selected'])}
+                        {if $v['selected']} selected="selected" {/if}
+                    {/if}
+                    value="{$opt_value}"
+                >
+                    {$opt_name}
+                </option>
+            {/foreach}
+        </select>
+    </div>
+
+    {if hasInputError('[name]')}
+        <span class="help-block">
+            <strong>{:inputError('[name]')}</strong>
+        </span>
+    {/if}
+</div>

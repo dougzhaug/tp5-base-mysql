@@ -1,0 +1,79 @@
+{extend name="layout/matrix" /}
+{block name="css"}
+    <!--下拉框css-->
+    {include file="slot/Select/css"/}
+    <!--开关css-->
+    {include file="slot/Radio/css"/}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        添加行业
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">添加行业</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="box box-info">
+                    <!--<div class="box-header with-border">-->
+                    <!--<h3 class="box-title">标题</h3>-->
+                    <!--</div>-->
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form role="form"  method="post">
+                        <div class="box-body">
+                            {include
+                            file="slot/Select/select"
+                            title='父菜单'
+                            name='ParentId'
+                            checked='$parent_id'
+                            options="$industryStr" /}
+                            <div class="form-group">
+                                <label >行业名称</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <input name="IndustryName" type="text" class="form-control" placeholder="用户名">
+                                </div>
+                            </div>
+                            {include
+                            file="slot/Radio/radio"
+                            type='level'
+                            name="IsState"
+                            options="[['name'=>'是','value'=>1],['name'=>'否','value'=>0]]"
+                            checked='1'
+                            title='状态' /}
+                        </div>
+                        <!-- /.box-body -->
+
+                        <div class="box-footer">
+                            <a class="btn btn-default" href="javaScript:history.back(-1)">取消</a>
+                            <button type="submit" class="btn btn-info pull-right">提交</button>
+                        </div>
+
+                    </form>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </section>
+{/block}
+
+{block name="script"}
+    <!--下拉框js-->
+    {include file="slot/Select/script"/}
+    <!--开关js-->
+    {include file="slot/Radio/script"/}
+
+{/block}

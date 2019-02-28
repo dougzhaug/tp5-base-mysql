@@ -1,0 +1,127 @@
+<!--时间选择器-->
+
+<!--
+    必传参数
+    title = '爱好'                       //显示的标题
+
+    //非必传参数
+    type                                //样式类型，
+    title_type                          //title样式默认为表单样式，当等于search时为搜索框样式
+    col_sm                              //布局大小
+-->
+
+{php}
+    $type = templateParamDefault("[type]",'type');
+    $title_type = templateParamDefault("[title_type]",'title_type');
+    $col_sm = templateParamDefault("[col_sm]",'col_sm',4);
+{/php}
+
+{switch $type}
+    {case date-picker}
+        <!-- Date(1) -->
+        <div class="form-group search-input col-sm-{$col_sm}">
+            <!--<label>Date:</label>-->
+            {if $title_type != 'search'}
+                <label>[title]</label>
+            {/if}
+            <div class="input-group date">
+                <div class="input-group-addon input-title">
+                    {if $title_type == 'search'}
+                        [title]
+                    {else/}
+                        <i class="fa fa-calendar"></i>
+                    {/if}
+                </div>
+                <input type="text" name="date_time" class="form-control pull-right" id="datepicker" placeholder="时间范围">
+            </div>
+            <!-- /.input group -->
+        </div>
+        <!-- /.form group -->
+    {/case}
+    {case range-picker}
+        <!-- Date range(2) -->
+        <div class="form-group search-input col-sm-{$col_sm}">
+            <!--<label>Date range:</label>-->
+            {if $title_type != 'search'}
+                <label>[title]</label>
+            {/if}
+            <div class="input-group">
+                <div class="input-group-addon input-title">
+                    {if $title_type == 'search'}
+                        [title]
+                    {else/}
+                        <i class="fa fa-calendar"></i>
+                    {/if}
+                </div>
+                <input type="text" name="date_range" class="form-control pull-right" id="reservation">
+            </div>
+            <!-- /.input group -->
+        </div>
+        <!-- /.form group -->
+    {/case}
+    {case time-range-picker}
+        <!-- Date and time range(3) -->
+        <div class="form-group search-input col-sm-{$col_sm}">
+            <!--<label>Date and time range:</label>-->
+            {if $title_type != 'search'}
+                <label>[title]</label>
+            {/if}
+            <div class="input-group">
+                <div class="input-group-addon input-title">
+                    {if $title_type == 'search'}
+                        [title]
+                    {else/}
+                        <i class="fa fa-calendar"></i>
+                    {/if}
+                </div>
+                <input type="text" name="date_range" class="form-control pull-right" id="reservationtime">
+            </div>
+            <!-- /.input group -->
+        </div>
+        <!-- /.form group -->
+    {/case}
+    {case data-time-range-picker}
+        <!-- Date and time range(4) -->
+        <div class="form-group search-input col-sm-{$col_sm}">
+            {if $title_type != 'search'}
+                <label>[title]</label>
+            {/if}
+
+            <div class="input-group">
+                <div class="input-group-addon input-title">
+                    {if $title_type == 'search'}
+                        [title]
+                    {else/}
+                        <i class="fa fa-calendar"></i>
+                    {/if}
+                </div>
+                <button type="button" class="btn btn-default pull-left" id="daterange-btn">
+                                    <span name="date_range">
+                                      <i class="fa fa-calendar"></i> [title]
+                                    </span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+            </div>
+        </div>
+        <!-- /.form group -->
+    {/case}
+    {default /}
+        <!-- Date range(2) -->
+        <div class="form-group search-input col-sm-{$col_sm}" style="margin-right: 5px">
+            {if $title_type != 'search'}
+                <label>[title]</label>
+            {/if}
+            <div class="input-group">
+                <div class="input-group-addon input-title">
+                    {if $title_type == 'search'}
+                        [title]
+                    {else/}
+                        <i class="fa fa-calendar"></i>
+                    {/if}
+                </div>
+                <input type="text" name="date_range" class="form-control pull-right" id="reservation">
+            </div>
+            <!-- /.input group -->
+        </div>
+        <!-- /.form group -->
+{/switch}

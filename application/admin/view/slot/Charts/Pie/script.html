@@ -1,0 +1,13 @@
+<!-- Sparkline -->
+<script src="__ADMIN__/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+
+<script>
+    $(function () {
+        $(".sparkline").each(function () {
+            var $this = $(this);
+            $this.sparkline('html', $this.data());
+        });
+        // Pie charts
+        $('.sparkpie').sparkline('html', {type: 'pie', height: '2.0em'});
+    })
+</script>

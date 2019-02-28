@@ -1,0 +1,55 @@
+<!--省市县三级联动-->
+
+<!--
+    //必传参数
+    province                        //省
+    city                            //市
+    district                        //区/县
+
+    //非必传参数
+    title                           //标题
+    title_type                      //title样式默认为表单样式，当等于search时为搜索框样式
+    title_type                      //title样式默认为表单样式，当等于search时为搜索框样式
+    col_sm                          //input框尺寸参数
+-->
+
+{php}
+    $title = templateParamDefault("[title]",'title','标题');
+    $title_type = templateParamDefault("[title_type]",'title_type');
+    $col_sm = templateParamDefault("[col_sm]",'col_sm',5);
+
+    $province_checked = templateParamDefault("[province_checked]",'province_checked');
+    $city_checked = templateParamDefault("[city_checked]",'city_checked');
+    $district_checked = templateParamDefault("[district_checked]",'district_checked');
+{/php}
+
+<div class="form-group {if hasInputError('[province]')} has-error {/if} form-inline {if $title_type == 'search'} col-sm-{$col_sm} {/if}" {if $title_type != 'search'} style="height: 60px" {/if}>
+    {if $title_type != 'search'}
+        <label>{$title}</label>
+    {/if}
+    <!--<label>选择 省、市、区</label>-->
+    <div data-toggle="distpicker" data-value-type="code">
+        <select style="margin-right: 5px" class="form-control col-xs-4" id="dist_picker_province" name="[province]" data-province="{$province_checked|default='---- 所在省 ----'}"></select>
+        <select style="margin-right: 5px" class="form-control col-xs-4" id="dist_picker_city" name="[city]"  data-city="{$city_checked|default='---- 所在市 ----'}"></select>
+        <select class="form-control col-xs-4" id="dist_picker_district" name="[district]" data-district="{$district_checked|default='---- 所在区 ----'}"></select>
+    </div>
+    <input type="hidden" name="[province]_code" id="dist_picker_province_code" value="{$province_checked}">
+    <input type="hidden" name="[city]_code" id="dist_picker_city_code" value="{$city_checked}">
+    <input type="hidden" name="[district]_code" id="dist_picker_district_code" value="{$district_checked}">
+
+    {if hasInputError('[province]')}
+        <span class="help-block">
+            <strong>{:inputError('[province]')}</strong>
+        </span>
+    {/if}
+    {if hasInputError('[city]')}
+        <span class="help-block">
+            <strong>{:inputError('[city]')}</strong>
+        </span>
+    {/if}
+    {if hasInputError('[district]')}
+        <span class="help-block">
+            <strong>{:inputError('[district]')}</strong>
+        </span>
+    {/if}
+</div>

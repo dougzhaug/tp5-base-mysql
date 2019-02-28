@@ -1,0 +1,293 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+    <!--表格css-->
+    {include file="slot/DataTables/css" /}
+    <!--时间选择器css-->
+    {include file="slot/DateRange/css" /}
+    <!--下拉框-->
+    {include file="slot/Select/css" /}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        订单列表
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">订单列表</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-search">
+                            <form id="formSearch" class="form-horizontal" method="POST" action="{:url('order')}">
+                                <div class="form-group form-inline col-sm-6">
+                                    <div data-toggle="distpicker" data-value-type="code">
+                                        <select  class="form-control col-xs-4 select-area" id="dist_picker_province" name="province"  onchange="areaChange()" data-province="---- 所在省 ----"></select>
+                                        <select  class="form-control col-xs-4 select-area" id="dist_picker_city"     name="city"       onchange="areaChange()" data-city="---- 所在市 ----"></select>
+                                        <select  class="form-control col-xs-4 select-area" id="dist_picker_district" name="district"  onchange="areaChange()" data-district="---- 所在区 ----"></select>
+                                    </div>
+                                </div>
+                                <!--多功能输入框-->
+                                {include
+                                        file="slot/InputGroup/input_group"
+                                        title_type='search'
+                                        field="['OrderId'=>'订单号']" /}
+
+                                <!--普通下拉框-->
+                                {include
+                                        file="slot/Select/select"
+                                        title_type='search'
+                                        title='支付方式'
+                                        name='paytype'
+                                        options="[['name'=>'请选择','value'=>0],['name'=>'微信','value'=>1],['name'=>'支付宝','value'=>2]]"
+                                /}
+
+                                {include
+                                        file="slot/Select/select" title='交易状态'
+                                        title_type='search'
+                                        name='paystatus'
+                                        options="[['name'=>'请选择','value'=>0],['name'=>'成功','value'=>1],['name'=>'失败','value'=>2]]"
+                                /}
+                                <div class="form-group  col-sm-3 " style="margin-right: 5px;">
+                                    <div class="input-group">
+                                        <div class="input-group-addon input-title">
+                                            代理商
+                                        </div>
+                                        <select id="sel_menu1" name="agent" class=" form-control">
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group   col-sm-3" style="margin-right: 5px;">
+                                    <div class="input-group">
+                                        <div class="input-group-addon input-title">
+                                            商户
+                                        </div>
+                                        <select id="sel_menu2" name="seller" class="js-data-example-ajax form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group  col-sm-3 " style="margin-right: 5px;">
+                                    <div class="input-group">
+                                        <div class="input-group-addon input-title">
+                                            门店
+                                        </div>
+                                        <select id="sel_menu3" name="store" class="js-data-example-ajax form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--时间选择器-->
+                                {include
+                                    file="slot/DateRange/date_range"
+                                    title_type='search'
+                                    title='交易时间'
+                                /}
+
+                                <div class="search-input col-sm-1">
+                                    <button type="button" onclick="doSearch()" id="searchBtn" class="btn btn-block btn-info" value="查询">查询</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+
+                    <!--<div class="box-tools">-->
+                        <!--<a href="#" class="btn bg-aqua margin">添加</a>-->
+                    <!--</div>-->
+                    <!-- /.box-tools -->
+
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="tables" class="table table-bordered table-striped" data-url="{:url('order')}">
+                            <thead>
+                            <tr>
+                                <th data-name="Id" data-sort="true">ID</th>
+                                <th data-name="AgentName">代理商名称</th>
+                                <th data-name="StoreName">商户名称</th>
+                                <th data-name="ShopName">门店名称</th>
+                                <th data-name="PayMode">支付方式</th>
+                                <th data-name="OrderId">订单号</th>
+                                <th data-name="TotalFee">订单金额</th>
+                                <th data-name="PayFee">结算金额</th>
+                                <th data-name="PayStatus">交易状态</th>
+                                <th data-name="PayTime">交易时间</th>
+                                <th data-name="">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>代理商名称</th>
+                                <th>商户名称</th>
+                                <th>门店名称</th>
+                                <th>交易方式</th>
+                                <th>订单号</th>
+                                <th>订单金额</th>
+                                <th>结算金额</th>
+                                <th>交易状态</th>
+                                <th>交易时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+{/block}
+
+{block name="script"}
+    <!--表格js-->
+    {include file="slot/DataTables/script"/}
+    <!--时间选择器js-->
+    {include file="slot/DateRange/script" start_date='' end_date='' date_limit='60'/}
+    <!--多功能输入框js-->
+    {include file="slot/InputGroup/script"/}
+    <!--下拉框js-->
+    <!--省市县三级联动js-->
+    {include file="slot/DistPicker/script"/}
+    <script src="__ADMIN__/bower_components/select2/dist/js/i18n/zh-CN.js"></script>
+    <!-- Select2 -->
+    <script src="__ADMIN__/bower_components/select2/dist/js/select2.full.min.js"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="__ADMIN__/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        /**
+         * DataTables 初始化
+         */
+        var tables = DataTableLoad();
+
+        function getButton(data,type,row)
+        {
+            var html = '';
+            return html;
+        }
+        $(function () {
+            $("#sel_menu1").select2({
+                language:'zh-CN',
+                placeholder: "请选择",
+                placeholderOption: "first",
+                allowClear: true,
+                ajax: {
+                    url: "{:url('order/getAgent')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            p :$('#dist_picker_province').val(),
+                            c :$('#dist_picker_city').val(),
+                            d :$('#dist_picker_district').val(),
+                            q: params.term,
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.items,
+                            pagination: {
+                                more: (params.page * 5) < data.total_count
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+                minimumInputLength: 1,
+                templateResult: formatRepoProvince, // omitted for brevity, see the source of this page
+                templateSelection: formatRepoProvince // omitted for brevity, see the source of this page
+            });
+
+        $("#sel_menu2").select2({
+            language:'zh-CN',
+            placeholder: "请选择",
+            placeholderOption: "first",
+            allowClear: true,
+                ajax: {
+                    url: "{:url('order/getSeller')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            aid:$("#sel_menu1").select2('val'),
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.items,
+                            pagination: {
+                                more: (params.page * 5) < data.total_count
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+                templateResult: formatRepoProvince,
+                templateSelection: formatRepoProvince
+            });
+            $("#sel_menu3").select2({
+                language:'zh-CN',
+                placeholder: "请选择",
+                placeholderOption: "first",
+                allowClear: true,
+                ajax: {
+                    url: "{:url('order/getStore')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            pid:$("#sel_menu2").select2('val'),
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.items,
+                            pagination: {
+                                more: (params.page * 5) < data.total_count
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+                minimumInputLength: 1,
+                templateResult: formatRepoProvince, // omitted for brevity, see the source of this page
+                templateSelection: formatRepoProvince // omitted for brevity, see the source of this page
+            });
+
+            function formatRepoProvince(repo) {
+                if (repo.loading) return repo.text;
+                if (!repo.text)  repo.text = '';
+                var markup = "<div>"+repo.text+"</div>";
+                return markup;
+            }
+        });
+    </script>
+{/block}

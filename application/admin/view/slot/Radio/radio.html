@@ -1,0 +1,58 @@
+<!--单选框-->
+
+<!--
+    //必传参数
+    name                                //字段名称
+    title                               //标题
+    options = [                         //选项
+            [
+                'name'=>'篮球',
+                'value'=>0
+            ],
+            [
+                'name'=>'足球',
+                'value'=>1,
+                'checked'=> 1           //选中
+            ],
+            [
+                'name'=>'乒乓球',
+                'value'=>2,
+                'disabled'=> 1          //禁用
+            ]
+        ];
+
+    //非必传参数
+    type                                //选项摆放顺序 默认为垂直  level为水平
+    checked                             //选中项
+-->
+{php}
+    $options = [options];
+    $type = templateParamDefault("[type]",'type');
+    $checked = templateParamDefault("[checked]",'checked',old('[name]'));
+
+{/php}
+<!-- radio -->
+<div class="form-group">
+    <label>[title]</label>
+    <div class="input-group">
+        {if $type == 'level'}
+            <div class="radio">
+            {foreach $options as $k=>$v}
+                <label {if $k == 0} style="padding: 0" {/if}>
+                    <input type="radio" name="[name]" value="{$v.value}" class="minimal" {if isset($v.checked) && $v.checked} checked {/if} {if isset($v.disabled) && $v.disabled} disabled {/if} {if $checked == $v['value']} checked {/if}>
+                    {$v.name}
+                </label>
+            {/foreach}
+            </div>
+        {else /}
+            {foreach $options as $k=>$v}
+                <div class="radio">
+                    <label style="padding: 0">
+                        <input type="radio" name="[name]" class="minimal" {if isset($v.checked) && $v.checked} checked {/if} {if isset($v.disabled) && $v.disabled} disabled {/if} {if $checked == $v['value']} checked {/if}>
+                        {$v.name}
+                    </label>
+                </div>
+            {/foreach}
+        {/if}
+    </div>
+</div>

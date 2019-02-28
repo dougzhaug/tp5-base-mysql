@@ -1,0 +1,125 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+<!--表格css-->
+{include file="slot/DataTables/css" /}
+<!--下拉框-->
+{include file="slot/Select/css" /}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        角色列表
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">角色列表</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-search">
+                        <form id="formSearch" class="form-horizontal" method="POST" action="{:url('/agent_role/index')}">
+                            <!--多功能输入框-->
+                            {include
+                            file="slot/InputGroup/input_group"
+                            title_type='search'
+                            field="$inputField"/}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            title_type='search'
+                            title='状态'
+                            name='IsState'
+                            options="[['name'=>'请选择','value'=>0],['name'=>'启用','value'=>1],['name'=>'停用','value'=>2]]" /}
+
+                            <div class="search-input col-sm-1">
+                                <button type="button" onclick="doSearch()" id="searchBtn" class="btn btn-block btn-info" value="查询">查询</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+
+                <div class="box-tools">
+                    <a href="{:url('role/create')}" class="btn bg-aqua margin">添加角色</a>
+                </div>
+                <!-- /.box-tools -->
+
+                <div class="box-body">
+                    <table id="tables" class="table table-bordered table-striped" data-url="{:url('/agent_role/index')}">
+                        <thead>
+                        <tr>
+                            <th data-name="Rid" data-sort="true">ID</th>
+                            <th data-name="RName">名称</th>
+                            <th data-name="RDescription">描述</th>
+                            <th data-name="IsState">状态</th>
+                            <th data-name="CreateTime">创建时间</th>
+                            <th data-name="">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>描述</th>
+                            <th>状态</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+{/block}
+
+{block name="script"}
+<!--表格js-->
+{include file="slot/DataTables/script"/}
+<!--多功能输入框js-->
+{include file="slot/InputGroup/script"/}
+<!--下拉框js-->
+{include file="slot/Select/script"/}
+<script>
+    /**
+     * DataTables 初始化
+     */
+    var tables = DataTableLoad();
+
+    /**
+     * 重构 操作按钮
+     *
+     * @param data
+     * @param type
+     * @param row
+     * @returns {string}
+     */
+    function getButton(data,type,row)
+    {
+        var html = '';
+        html += '<a href="agent_role/'+data.Rid+'/edit" class="btn btn-primary btn-xs data-tables data-tables-edit"><span class="glyphicon glyphicon-edit"></span>编辑</a>';
+        html += '<button data-url="agent_role/'+data.Rid+'" onclick="tablesDelete(this)" class="btn btn-danger btn-xs data-tables data-tables-delete"><span class="glyphicon glyphicon-trash"></span>删除</button>';
+        return html;
+    }
+</script>
+{/block}

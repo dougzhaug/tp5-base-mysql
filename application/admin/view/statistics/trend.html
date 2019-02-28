@@ -1,0 +1,73 @@
+{extend name="layout/fixed" /}
+
+{block name="css"}
+    <!--Custom css-->
+    {include file="slot/Charts/Custom/css" /}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        销售统计
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">销售统计</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+    <!-- Main content -->
+    <section class="content">
+        <!-- Main row -->
+        <div class="row">
+            <!-- Left col -->
+            <section class="col-lg-12 connectedSortable">
+                {include file="slot/Charts/RealTime/real_time" title='实时成交量'/}
+                {include file="slot/Charts/Custom/custom" /}
+                {include file="slot/Charts/Line/line" /}
+                <div class="col-lg-6">
+                    {include file="slot/Charts/Bar/bar" /}
+                </div>
+                <div class="col-lg-6">
+                    {include file="slot/Charts/Donut2/donut" /}
+                </div>
+            </section>
+            <!-- /.Left col -->
+        </div>
+        <!-- /.row (main row) -->
+    </section>
+    <!-- /.content -->
+{/block}
+
+{block name="script"}
+
+    <script>
+        var StatisticsData = [];
+        $(function () {
+            $.ajax({
+                url:"{:url('statistics/get_statistics_data')}",
+                data:{scene:['QuarterAmountLink','CountryAmountDonut','UserTrendLink','CountryDeviceDonut2'],time:['2017,2019']},
+                type:'POST',
+                async:false,
+                success:function (result) {
+                    if(result.errorCode){
+                        alert(result.errorMessage);
+                    }else{
+                        StatisticsData = result.data;
+                    }
+                }
+            })
+        })
+    </script>
+
+    {include file="slot/Charts/RealTime/script" /}
+    <!--Custom js-->
+    {include file="slot/Charts/Custom/script" /}
+
+    {include file="slot/Charts/Line/script" /}
+    {include file="slot/Charts/Bar/script" /}
+    {include file="slot/Charts/Donut2/script" /}
+{/block}

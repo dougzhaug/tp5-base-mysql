@@ -1,0 +1,255 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+<!--下拉框css-->
+{include file="slot/Select/css"/}
+{include file="slot/Switch/css"/}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        编辑门店
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">编辑门店</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-info">
+                <!--<div class="box-header with-border">-->
+                <!--<h3 class="box-title">标题</h3>-->
+                <!--</div>-->
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" method="post">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>所属代理</label>
+                            <input type="text" value="{$storeInfo['AgentName']}" disabled class="form-control" >
+                        </div>
+                        <div class="form-group">
+                            <label>所属商户</label>
+                            <input type="text"  value="{$storeInfo['ParentName']}" disabled  class="form-control" >
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">门店名称</label>
+                            <input type="text" name="StoreName" value="{$storeInfo['StoreName']}" class="form-control" id="exampleInputEmail1" placeholder="名称">
+                            <input type="hidden" name="ID" value="{$storeInfo['ID']}">
+                        </div>
+                        <div class="form-group">
+                            <label >联系人</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <input type="text" name="ContactName" value="{$storeInfo['ContactName']}" class="form-control" placeholder="联系人">
+                            </div>
+                        </div>
+                        <div class="form-group layui-upload">
+                            <label>身份证正面</label>
+                            <div class="input-group">
+                                {if condition="$storeInfo['LegalPersonPhoto'] == ''"}
+                                <img src="/uploads/demo/1547107756.jpg" width="150">
+                                {else}
+                                <img src="/{$storeInfo['LegalPersonPhoto']}" width="150">
+                                {/if}
+                                <input type="file" class="upload" accept="image/gif,image/jpeg,image/x-png"/>
+                                <span></span>
+                                <input type="hidden" name="LegalPersonPhoto" value="{$storeInfo['LegalPersonPhoto']}"/>
+                            </div>
+                        </div>
+                        <div class="form-group layui-upload">
+                            <label>身份证反面</label>
+                            <div class="input-group">
+                                {if condition="$storeInfo['LegalPersonPhoto2'] == ''"}
+                                <img src="/uploads/demo/1547107785.jpg" width="150">
+                                {else}
+                                <img src="/{$storeInfo['LegalPersonPhoto2']}" width="150">
+                                {/if}
+                                <input type="file"  class="upload" accept="image/gif,image/jpeg,image/x-png"/>
+                                <span></span>
+                                <input type="hidden" name="LegalPersonPhoto2" value="{$storeInfo['LegalPersonPhoto2']}"  />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label >联系电话</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-phone"></i>
+                                </div>
+                                <input type="tel" name="ContactPhone" value="{$storeInfo['ContactPhone']}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label >联系邮箱</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-envelope"></i>
+                                </div>
+                                <input type="email" name="ContactMail" value="{$storeInfo['ContactMail']}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label >资质信息(营业执照注册号)</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa"></i>
+                                </div>
+                                <input type="text" name="Qualification" value="{$storeInfo['Qualification']}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group layui-upload">
+                            <label>营业执照照片</label>
+                            <div class="input-group">
+                                {if condition="$storeInfo['QualificationPhoto'] == ''"}
+                                <img src="/uploads/demo/1547109170.jpg" width="150">
+                                {else}
+                                <img src="/{$storeInfo['QualificationPhoto']}" width="150">
+                                {/if}
+                                <input type="file"  class="upload" accept="image/gif,image/jpeg,image/x-png"/>
+                                <span></span>
+                                <input type="hidden" name="QualificationPhoto" value="{$storeInfo['QualificationPhoto']}"   />
+                            </div>
+                        </div>
+                        {include file="slot/Switch/switch" title='对公账户类型' name='BankType' checked='$storeInfo.BankType' /}
+                        <div class="form-group">
+                            <label >开户名称</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa"></i>
+                                </div>
+                                <input type="text" name="BankAccountName" value="{$storeInfo['BankAccountName']}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label >开户银行</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa"></i>
+                                </div>
+                                <input type="text" name="BankOfDeposit" value="{$storeInfo['BankOfDeposit']}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label >开户银行城市</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa"></i>
+                                </div>
+                                <input type="text" name="BankCity" value="{$storeInfo['BankCity']}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label >开户支行</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa"></i>
+                                </div>
+                                <input type="text" name="BankSubName" value="{$storeInfo['BankSubName']}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label >银行账号</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa "></i>
+                                </div>
+                                <input type="number" name="BankNum" value="{$storeInfo['BankNum']}" class="form-control">
+                            </div>
+                        </div>
+                        {include file="slot/Switch/switch" title='是否启用独立商户号' name='IsAlone'  checked='$storeInfo.IsAlone' /}
+                        <div class="form-group">
+                            <label >支付限额</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa "></i>
+                                </div>
+                                <input type="number" name="Pay_Limit" value="{$storeInfo['Pay_Limit']}" class="form-control">
+                            </div>
+                        </div>
+                        <!--普通下拉框-->
+                        {include
+                        file="slot/Select/select"
+                        title='性质'
+                        name='Nature'
+                        selected='$storeInfo.Nature'
+                        options="[['name'=>'集团','value'=>1],['name'=>'公司','value'=>2],['name'=>'个体','value'=>3]]" /}
+
+                        <!--省市县三级联动-->
+                        {include
+                        file="slot/DistPicker/dist_picker"
+                        title='地区'
+                        province='Province'
+                        province_checked='$storeInfo.Province'
+                        city_checked='$storeInfo.City'
+                        district_checked='$storeInfo.Area'
+                        city='City'
+                        district='Area'/}
+                        <div class="form-group">
+                            <label >详细地址</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-map"></i>
+                                </div>
+                                <input type="text" name="Addr"  value="{$storeInfo['Addr']}" class="form-control">
+                            </div>
+                        </div>
+                        <!-- textarea -->
+<!--                        <div class="form-group">
+                            <label>经营范围</label>
+                            <textarea class="form-control" rows="3" placeholder=""></textarea>
+                        </div>-->
+
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <a class="btn btn-default" href="javaScript:history.back(-1)">取消</a>
+                        <button type="submit" class="btn btn-info pull-right">提交</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+    <script>
+        $('.upload').change(function(event) {
+            var e = $(this);
+            var formData = new FormData();
+            formData.append("file", $(this).get(0).files[0]);
+            $.ajax({
+                url:"{:url('seller_uploadImg')}",
+                type:'POST',
+                data:formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success:function(res){
+                    e.siblings('span').html(res.msg);
+                    e.siblings('img').attr('src','http://'+window.location.host+'/'+res.photo);
+                    e.siblings('input').val(res.photo);
+                }
+            });
+        });
+    </script>
+</section>
+{/block}
+
+{block name="script"}
+
+<!--省市县三级联动js-->
+{include file="slot/DistPicker/script"/}
+<!--下拉框js-->
+{include file="slot/Select/script"/}
+{include file="slot/Switch/script"/}
+
+{/block}

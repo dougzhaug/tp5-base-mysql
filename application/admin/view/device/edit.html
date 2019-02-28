@@ -1,0 +1,107 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+    <!--下拉框css-->
+    {include file="slot/Select/css"/}
+    <!--单选框css-->
+    {include file="slot/Radio/css"/}
+    <!--开关css-->
+    {include file="slot/Switch/css"/}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        编辑设备
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">编辑设备</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-info">
+                <!--<div class="box-header with-border">-->
+                <!--<h3 class="box-title">标题</h3>-->
+                <!--</div>-->
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" method="POST" action="{:url('/device/'.$device['Id'])}">
+                    <input type="hidden" name="_method" value="put" />
+                    <input type="hidden" name="Id" value="{$device['Id']}">
+                    <div class="box-body">
+
+                        <!--普通下拉框-->
+                        {include
+                        file="slot/Select/select"
+                        title='所属商户'
+                        name='Store_Id'
+                        options="$store" /}
+
+                        <div class="form-group {if hasInputError('DevName')} has-error {/if}">
+                            <label for="inputDevName">名称</label>
+                            <input name="DevName" type="text" class="form-control" id="inputDevName" placeholder="名称" value="{$device.DevName|default=old('DevName')}">
+                            {if hasInputError('DevName')}
+                            <span class="help-block">
+                                    <strong>{:inputError('DevName')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+
+                        <div class="form-group {if hasInputError('DeviceSn')} has-error {/if}">
+                            <label for="inputDeviceSn">设备编号</label>
+                            <input name="DeviceSn" type="text" class="form-control" id="inputDeviceSn" placeholder="设备编号" value="{$device.DeviceSn|default=old('DeviceSn')}">
+                            {if hasInputError('DeviceSn')}
+                            <span class="help-block">
+                                    <strong>{:inputError('DeviceSn')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+
+                        <!--单选框-->
+                        {include
+                        file="slot/Radio/radio"
+                        type='level'
+                        name="Is_Refund"
+                        options="[['name'=>'是','value'=>1], ['name'=>'否','value'=>0]]"
+                        title='是否可退款'
+                        checked="$device.Is_Refund" /}
+
+                        <!--开关-->
+                        {include
+                        file="slot/Switch/switch"
+                        title='状态'
+                        name='IsState'
+                        checked="$device.IsState" /}
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <a class="btn btn-default" href="javaScript:history.back(-1)">取消</a>
+                        <button type="submit" class="btn btn-info pull-right">提交</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+{/block}
+
+{block name="script"}
+
+    <!--下拉框js-->
+    {include file="slot/Select/script"/}
+    <!--单选框js-->
+    {include file="slot/Radio/script"/}
+    <!--开关js-->
+    {include file="slot/Switch/script"/}
+
+{/block}

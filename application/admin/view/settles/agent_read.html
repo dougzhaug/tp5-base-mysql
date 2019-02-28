@@ -1,0 +1,283 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+<!--表格css-->
+{include file="slot/DataTables/css" /}
+<!--下拉框-->
+{include file="slot/Select/css" /}
+<!--时间选择器css-->
+{include file="slot/DateRange/css" /}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        结算单详情
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">结算单详情</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<!-- Main content -->
+<section class="invoice">
+    <!-- title row -->
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="page-header">
+                <i class="fa fa-globe"></i> 河北代理
+                <small class="pull-right">日期: 2018/10/14</small>
+            </h2>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- info row -->
+    <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+            收款方:
+            <strong>张三</strong>
+            <address>
+                <br>
+                中国、河北省、石家庄市 裕华路88号<br>
+                账号: 6205000*****118<br>
+                电话: (+86) 1883322114<br>
+                电子邮箱: info@almasaeedstudio.com
+            </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+            付款方：<strong>石家庄蓝儿</strong>
+            <address>
+                <br>
+                中国、河北省、石家庄市 大经街1号<br>
+                账号: 3115245***14<br>
+                电话: (0311) 8539-1037<br>
+                电子邮箱: john.doe@example.com
+            </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+            <b>订单信息</b><br>
+            <br>
+            <b>结算单号:</b> L2175112220004<br>
+            <b>结算方式:</b> 转账<br>
+            <b>结算时间:</b> 2018/10/10<br>
+            <b>结算金额:</b> 328.60<br>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+    <!-- Table row -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <!-- box-header -->
+                <div class="box-header ">
+                    <div class="box-search">
+                        <form id="formSearch" class="form-horizontal" method="POST" action="{:url('/settles/agent/read/'.$Request.param.id)}">
+
+                            <!--多功能输入框-->
+                            {include
+                            file="slot/InputGroup/input_group"
+                            field="$inputGroupField"
+                            col_sm='3'/}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            name="second_agent"
+                            title_type='search'
+                            title='二级代理'
+                            options="$second_agent"
+                            col_sm='3' /}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            name="seller"
+                            title_type='search'
+                            title='商户'
+                            options="$seller"
+                            col_sm='3' /}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            name="store"
+                            title_type='search'
+                            title='门店'
+                            options="['请选择']"
+                            col_sm='3' /}
+
+                            <!--时间选择器-->
+                            {include
+                            file="slot/DateRange/date_range"
+                            title_type='search'
+                            title='支付时间'
+                            col_sm='5' /}
+
+                            <div class="search-input col-sm-1">
+                                <button type="button" onclick="doSearch()" id="searchBtn" class="btn btn-block btn-info" value="查询">查询</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+
+                <div class="box-body">
+                    <table id="tables" class="table table-bordered table-striped" data-url="{:url('/settles/agent/read/'.$Request.param.id)}">
+                        <thead>
+                        <tr>
+                            <th data-name="Id" data-sort="true">ID</th>
+                            <th data-name="OrderId">订单号</th>
+                            <th data-name="AgentName">代理商</th>
+                            <th data-name="StoreName">商户</th>
+                            <th data-name="ShopName">门店</th>
+                            <th data-name="PayTime">支付时间</th>
+                            <th data-name="PayFee">支付金额</th>
+                            <th data-name="">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>订单号</th>
+                            <th>代理商</th>
+                            <th>商户</th>
+                            <th>门店</th>
+                            <th>支付时间</th>
+                            <th>支付金额</th>
+                            <th>操作</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+    <!-- this row will not appear when printing -->
+    <div class="row no-print">
+        <div class="col-xs-12">
+            <a href="#" class="btn btn-default"><i class="fa fa-back"></i> 取消</a>
+            <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> 确认
+            </button>
+            <!--<button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">-->
+            <!--<i class="fa fa-download"></i> 生成 PDF-->
+            <!--</button>-->
+        </div>
+    </div>
+</section>
+{/block}
+
+{block name="script"}
+<!--表格js-->
+{include file="slot/DataTables/script"/}
+<!--下拉框js-->
+{include file="slot/Select/script"/}
+<!--时间选择器js-->
+{include file="slot/DateRange/script" start_date='' end_date='' date_limit='60'/}
+<!--多功能输入框js-->
+{include file="slot/InputGroup/script"/}
+<script>
+    /**
+     * DataTables 初始化
+     */
+    var tables = DataTableLoad();
+
+    /**
+     * 重构 操作按钮
+     *
+     * @param data
+     * @param type
+     * @param row
+     * @returns {string}
+     */
+    function getButton(data,type,row)
+    {
+        var html = '';
+        return html;
+    }
+
+
+    /**
+     * 商户联动
+     */
+    $("#second_agent").change(function () {
+        $("#seller").html('');
+
+        var agent_id= $("#second_agent").val();
+        if(agent_id == 0){
+            return false;
+        }
+
+        $.ajax({
+            url: "{:url('seller/get_seller')}",
+            dataType: "JSON",
+            data: {'id': agent_id},
+            type: "get",
+            success:function (data) {
+                var gradeNum= data.length;
+                var option = "";
+                if(gradeNum>0){
+                    for(var i = 0;i<gradeNum;i++){
+                        option += "<option value='"+data[i].value+"'>"+data[i].name+"</option>";
+                    }
+                }
+                $("#seller").html(option);
+                // $("#class").val(Id); //编辑时绑定
+                $("#seller").select2({ minimumResultsForSearch: -1 });//加载样式
+            },
+            error:function(e) {
+                alert("系统异常，请稍候重试！");
+            }
+        });
+    });
+
+    /**
+     * 门店联动
+     */
+    $("#seller").change(function () {
+        $("#store").html('');
+
+        var seller_id= $("#seller").val();
+        if(seller_id == 0){
+            return false;
+        }
+
+        $.ajax({
+            url: "{:url('store/get_store')}",
+            dataType: "JSON",
+            data: {'id': seller_id},
+            type: "get",
+            success:function (data) {
+                var gradeNum= data.length;
+                var option = "";
+                if(gradeNum>0){
+                    for(var i = 0;i<gradeNum;i++){
+                        option += "<option value='"+data[i].value+"'>"+data[i].name+"</option>";
+                    }
+                }
+                $("#store").html(option);
+                // $("#class").val(Id); //编辑时绑定
+                $("#store").select2({ minimumResultsForSearch: -1 });//加载样式
+            },
+            error:function(e) {
+                alert("系统异常，请稍候重试！");
+            }
+        });
+    });
+</script>
+{/block}

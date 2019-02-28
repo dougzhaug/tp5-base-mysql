@@ -1,0 +1,11 @@
+.input-title{
+    background-color: #00c0ef !important;color: #fff;
+}
+.data-tables{
+    margin-right: 5px;
+    /*margin-top: 5px;*/
+}
+
+.data-tables span {
+    margin-right: 3px;
+}

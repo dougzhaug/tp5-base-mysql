@@ -1,0 +1,46 @@
+<!--可选输入框-->
+
+<!--
+    //必传参数
+    field = [                       //查询类型数据
+            'name'=>'姓名',
+            'age'=>'年龄'
+        ];
+
+    //非必传参数
+    option_field                    //当前选中类型字段名称
+    keyword                         //搜索内容字段名称
+    selected                        //选中项的key
+    value                           //input框内的默认数据
+    col_sm                          //input框尺寸参数
+-->
+
+{php}
+    $inputGroupField = [field];
+    $option_field = templateParamDefault("[option_field]",'option_field','option_field');
+    $keyword = templateParamDefault("[keyword]",'keyword','keyword');
+    $selected = templateParamDefault("[selected]",'selected');
+    $value = templateParamDefault("[value]",'value');
+    $col_sm = templateParamDefault("[col_sm]",'col_sm',3);
+{/php}
+<div class="input-group margin search-input col-sm-{$col_sm}" style="float:left;margin: 0 5px 0 0;">
+
+    <div class="input-group-btn">
+        <button type="button" class="btn btn-info btn-flat input-group-btn-button">{if $selected}{$inputGroupField[$selected]}{else/}{$inputGroupField|reset}{/if}</button>
+        <!--当只有一个查询类型时，不显示下拉箭头-->
+        {if count($inputGroupField) > 1}
+        <button type="button" class="btn btn-info btn-flat dropdown-toggle" data-toggle="dropdown" style="padding-right: 6px;">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            {foreach $inputGroupField as $k=>$v}
+            <li data-field="{$k}"><a href="javascript:void(0);">{$v}</a></li>
+            {/foreach}
+        </ul>
+        {/if}
+    </div>
+
+    <input type="hidden" id="option_field" name="{$option_field}" value="{if $selected}{$selected}{else/}{$inputGroupField|key}{/if}">
+    <input type="text" id="keyword" class="form-control" name="{$keyword}" value="{$value}">
+</div>

@@ -1,0 +1,9 @@
+<script>
+    /**
+     * 多功能搜索框，点击事件
+     */
+    $('.dropdown-menu li').on('click',function () {
+        $('.input-group-btn-button').html($(this).text());
+        $('#option_field').val($(this).data('field'));
+    })
+</script>

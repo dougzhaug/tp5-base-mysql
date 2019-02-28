@@ -1,0 +1,123 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+    <!--下拉框css-->
+    {include file="slot/Select/css"/}
+    <!--开关css-->
+    {include file="slot/Switch/css"/}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        添加代理商
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">添加代理商</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="box box-info">
+                    <!--<div class="box-header with-border">-->
+                        <!--<h3 class="box-title">标题</h3>-->
+                    <!--</div>-->
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST" action="{:url('agent/save')}">
+                        <div class="box-body">
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            title='上级代理商'
+                            name='ParentId'
+                            selected="$agent_id"
+                            options="$agent"
+                            col_sm=12 /}
+
+                            <div class="form-group {if hasInputError('AgentName')} has-error {/if}">
+                                <label for="AgentName">名称</label>
+                                <input name="AgentName" type="test" class="form-control" id="AgentName" placeholder="名称" value="{:old('AgentName')}">
+                                {if hasInputError('AgentName')}
+                                <span class="help-block">
+                                    <strong>{:inputError('AgentName')}</strong>
+                                </span>
+                                {/if}
+                            </div>
+
+                            <div class="form-group {if hasInputError('ContactName')} has-error {/if}">
+                                <label >联系人</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <input name="ContactName" type="text" class="form-control" placeholder="联系人"  value="{:old('ContactName')}">
+                                </div>
+                                {if hasInputError('ContactName')}
+                                <span class="help-block">
+                                    <strong>{:inputError('ContactName')}</strong>
+                                </span>
+                                {/if}
+                            </div>
+                            <div class="form-group {if hasInputError('ContactPhone')} has-error {/if}">
+                                <label >联系电话</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-phone"></i>
+                                    </div>
+                                    <input name="ContactPhone" type="text" class="form-control" value="{:old('ContactPhone')}">
+                                </div>
+                                {if hasInputError('ContactPhone')}
+                                <span class="help-block">
+                                    <strong>{:inputError('ContactPhone')}</strong>
+                                </span>
+                                {/if}
+                            </div>
+                            <div class="form-group">
+                                <label>备注</label>
+                                <input name="Remark" type="text" class="form-control">
+                            </div>
+
+                            <!--省市县三级联动-->
+                            {include
+                                file="slot/DistPicker/dist_picker"
+                                title='地区'
+                                province='Province'
+                                city='City'
+                                district='Area'/}
+
+                            <!--开关-->
+                            {include
+                                file="slot/Switch/switch"
+                                title='状态'
+                                name='IsState' /}
+                        </div>
+                        <!-- /.box-body -->
+
+                        <div class="box-footer">
+                            <a class="btn btn-default" href="javaScript:history.back(-1)">取消</a>
+                            <button type="submit" class="btn btn-info pull-right">提交</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </section>
+{/block}
+
+{block name="script"}
+    <!--下拉框js-->
+    {include file="slot/Select/script"/}
+    <!--省市县三级联动js-->
+    {include file="slot/DistPicker/script"/}
+    <!--开关js-->
+    {include file="slot/Switch/script"/}
+{/block}

@@ -1,0 +1,351 @@
+{extend name="layout/fixed" /}
+
+{block name="css"}
+<!-- AdminLTE Skins. Choose a skin from the css/skins
+     folder instead of downloading all of them to reduce the load. -->
+<link rel="stylesheet" href="__ADMIN__/dist/css/skins/_all-skins.min.css">
+<!-- Morris chart -->
+<link rel="stylesheet" href="__ADMIN__/bower_components/morris.js/morris.css">
+<!-- jvectormap -->
+<link rel="stylesheet" href="__ADMIN__/bower_components/jvectormap/jquery-jvectormap.css">
+<!-- Date Picker -->
+<link rel="stylesheet" href="__ADMIN__/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+<!-- Daterange picker -->
+<link rel="stylesheet" href="__ADMIN__/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+<!-- bootstrap wysihtml5 - text editor -->
+<link rel="stylesheet" href="__ADMIN__/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
+<!--下拉框-->
+{include file="slot/Select/css" /}
+<!--时间选择器css-->
+{include file="slot/DateRange/css" /}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        统计图表
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">统计图表</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<!-- Main content -->
+<section class="content">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-search">
+                        <form id="formSearch" class="form-horizontal" method="POST" action="">
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            name="top_agent"
+                            title_type='search'
+                            title='一级代理'
+                            options="$top_agent"
+                            col_sm='3' /}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            name="second_agent"
+                            title_type='search'
+                            title='二级代理'
+                            options="['请选择']"
+                            col_sm='3' /}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            name="seller"
+                            title_type='search'
+                            title='商户'
+                            options="['请选择']"
+                            col_sm='3' /}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            name="store"
+                            title_type='search'
+                            title='门店'
+                            options="['请选择']"
+                            col_sm='3' /}
+
+                            <!--省市县三级联动-->
+                            {include
+                            file="slot/DistPicker/dist_picker"
+                            title_type='search'
+                            province='province'
+                            city='city'
+                            district='area'
+                            col_sm='5'/}
+
+                            <!--普通下拉框-->
+                            {include
+                            file="slot/Select/select"
+                            name="PayMentTypeId"
+                            title_type='search'
+                            title='交易类型'
+                            options="['请选择','微信','支付宝']"
+                            col_sm='3' /}
+
+                            <!--时间选择器-->
+                            {include
+                            file="slot/DateRange/date_range"
+                            type='data-time-range-picker'
+                            title_type='search'
+                            title='交易时间'
+                            col_sm='4' /}
+
+                            <div class="search-input col-sm-1">
+                                <button type="button" onclick="doStatistics()" id="searchBtn" class="btn btn-block btn-info" value="查询">查询</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+            </div>
+        </div>
+
+
+        <!-- ./col -->
+    </div>
+    <!-- /.row -->
+    <!-- Main row -->
+    <div class="row">
+        <!-- Left col -->
+        <section class="col-lg-12 connectedSortable">
+            <!-- Custom tabs (Charts with tabs)-->
+            <div class="nav-tabs-custom">
+                <!-- Tabs within a box -->
+                <ul class="nav nav-tabs pull-right">
+                    <!--<li class="active"><a href="#revenue-link" data-toggle="tab">线图</a></li>-->
+                    <li class="pull-left header"><i class="fa fa-inbox"></i> 订单统计</li>
+                </ul>
+                <div class="tab-content no-padding">
+                    <!-- Morris chart - Sales -->
+                    <div class="chart tab-pane active" id="revenue-link" style="position: relative; height: 300px;"></div>
+                </div>
+            </div>
+            <!-- /.nav-tabs-custom -->
+            <!-- /.box -->
+        </section>
+        <!-- /.Left col -->
+    </div>
+    <!-- /.row (main row) -->
+
+</section>
+<!-- /.content -->
+{/block}
+
+{block name="script"}
+<!-- jQuery UI 1.11.4 -->
+<script src="__ADMIN__/bower_components/jquery-ui/jquery-ui.min.js"></script>
+<!-- Morris.js charts -->
+<script src="__ADMIN__/bower_components/raphael/raphael.min.js"></script>
+<script src="__ADMIN__/bower_components/morris.js/morris.min.js"></script>
+<!-- Sparkline -->
+<script src="__ADMIN__/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<!-- jvectormap -->
+<script src="__ADMIN__/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="__ADMIN__/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="__ADMIN__/bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="__ADMIN__/bower_components/moment/min/moment.min.js"></script>
+<script src="__ADMIN__/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- datepicker -->
+<script src="__ADMIN__/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+<!-- Bootstrap WYSIHTML5 -->
+<script src="__ADMIN__/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+
+<script>
+    $(function () {
+        doStatistics();
+    });
+
+    //获取数据
+    function doStatistics() {
+        $.ajax({
+            url: "{:url('statistics/get_statistics_order_data')}",
+            data:  $('#formSearch').serialize(),
+            type: 'POST',
+            async: false,
+            success: function (result) {
+                if(result.errorCode){
+                    alert(result.errorMessage);
+                }else{
+                    if(result.data){
+                        makeChart(result.data,'revenue-link')
+                    }
+                }
+            }
+        })
+    }
+
+    //生成图表
+    function makeChart(data,id) {
+        var area = new Morris.Area({
+            element   : id,
+            resize    : true,
+            data      : data,
+            xkey      : 'key',
+            ykeys     : ['amount', 'volume'],
+            labels    : ['交易金额', '交易量'],
+            lineColors: ['#a0d0e0', '#3c8dbc'],
+            hideHover : 'auto'
+        });
+        // Fix for charts under tabs
+        $('.box ul.nav a').on('shown.bs.tab', function () {
+            area.redraw();
+        });
+    }
+
+</script>
+<!--下拉框js-->
+{include file="slot/Select/script"/}
+<!--时间选择器js-->
+{include file="slot/DateRange/script" start_date='' end_date='' date_limit='60'/}
+<!--省市县三级联动js-->
+{include file="slot/DistPicker/script"/}
+
+<script>
+    /**
+     * 代理商联动
+     */
+    $("#top_agent").change(function () {
+        $("#second_agent").html('');
+        $("#seller").html('');
+
+        var top_agent= $("#top_agent").val();
+        if(top_agent == 0){
+            return false;
+        }
+
+        $.ajax({
+            url: "{:url('agent/get_second_agent')}",
+            dataType: "JSON",
+            data: {'id': top_agent},
+            type: "get",
+            success:function (data) {
+                var gradeNum= data.length;
+                var option = "";
+                if(gradeNum>0){
+                    for(var i = 0;i<gradeNum;i++){
+                        option += "<option value='"+data[i].value+"'>"+data[i].name+"</option>";
+                    }
+                }
+                $("#second_agent").html(option);
+                // $("#class").val(Id); //编辑时绑定
+                $("#second_agent").select2({ minimumResultsForSearch: -1 });//加载样式
+            },
+            error:function(e) {
+                alert("系统异常，请稍候重试！");
+            }
+        });
+
+        //处理一级代理商下存在商户的结构
+        $.ajax({
+            url: "{:url('seller/get_seller')}",
+            dataType: "JSON",
+            data: {'id': top_agent},
+            type: "get",
+            success:function (data) {
+                var gradeNum= data.length;
+                var option = "";
+                if(gradeNum>0){
+                    for(var i = 0;i<gradeNum;i++){
+                        option += "<option value='"+data[i].value+"'>"+data[i].name+"</option>";
+                    }
+                }
+                $("#seller").html(option);
+                // $("#class").val(Id); //编辑时绑定
+                $("#seller").select2({ minimumResultsForSearch: -1 });//加载样式
+            },
+            error:function(e) {
+                alert("系统异常，请稍候重试！");
+            }
+        });
+    });
+
+
+    /**
+     * 商户联动
+     */
+    $("#second_agent").change(function () {
+        $("#seller").html('');
+
+        var agent_id= $("#second_agent").val();
+        if(agent_id == 0){
+            return false;
+        }
+
+        $.ajax({
+            url: "{:url('seller/get_seller')}",
+            dataType: "JSON",
+            data: {'id': agent_id},
+            type: "get",
+            success:function (data) {
+                var gradeNum= data.length;
+                var option = "";
+                if(gradeNum>0){
+                    for(var i = 0;i<gradeNum;i++){
+                        option += "<option value='"+data[i].value+"'>"+data[i].name+"</option>";
+                    }
+                }
+                $("#seller").html(option);
+                // $("#class").val(Id); //编辑时绑定
+                $("#seller").select2({ minimumResultsForSearch: -1 });//加载样式
+            },
+            error:function(e) {
+                alert("系统异常，请稍候重试！");
+            }
+        });
+    });
+
+    /**
+     * 门店联动
+     */
+    $("#seller").change(function () {
+        $("#store").html('');
+
+        var seller_id= $("#seller").val();
+        if(seller_id == 0){
+            return false;
+        }
+
+        $.ajax({
+            url: "{:url('store/get_store')}",
+            dataType: "JSON",
+            data: {'id': seller_id},
+            type: "get",
+            success:function (data) {
+                var gradeNum= data.length;
+                var option = "";
+                if(gradeNum>0){
+                    for(var i = 0;i<gradeNum;i++){
+                        option += "<option value='"+data[i].value+"'>"+data[i].name+"</option>";
+                    }
+                }
+                $("#store").html(option);
+                // $("#class").val(Id); //编辑时绑定
+                $("#store").select2({ minimumResultsForSearch: -1 });//加载样式
+            },
+            error:function(e) {
+                alert("系统异常，请稍候重试！");
+            }
+        });
+    });
+</script>
+{/block}

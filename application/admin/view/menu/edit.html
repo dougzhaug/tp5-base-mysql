@@ -1,0 +1,108 @@
+{extend name="layout/matrix" /}
+
+{block name="css"}
+<!--下拉框css-->
+{include file="slot/Select/css"/}
+
+<!--单选框css-->
+{include file="slot/Radio/css"/}
+{/block}
+
+{block name="main-header"}
+<section class="content-header">
+    <h1>
+        添加代理商
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{:url('/')}"><i class="fa fa-home"></i> 首页</a></li>
+        <li class="active">添加代理商</li>
+    </ol>
+</section>
+{/block}
+
+{block name="main"}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-info">
+                <!--<div class="box-header with-border">-->
+                <!--<h3 class="box-title">标题</h3>-->
+                <!--</div>-->
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" method="POST" action="{:url('menu/'.$menu['id'])}">
+
+                    <input type="hidden" name="_method" value="put" />
+
+                    <div class="box-body">
+                        <!--普通下拉框-->
+                        {include
+                            file="slot/Select/select"
+                            title='父菜单'
+                            name='pid'
+                            checked="$pid"
+                            options="$allMenu" /}
+
+                        <div class="form-group {if hasInputError('name')} has-error {/if}">
+                            <label for="name">名称</label>
+                            <input name="name" type="test" class="form-control" id="name" placeholder="名称" value="{$menu.name|default=old('name')}">
+                            {if hasInputError('name')}
+                                <span class="help-block">
+                                    <strong>{:inputError('name')}</strong>
+                                </span>
+                            {/if}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="url">Url</label>
+                            <input name="url" type="text" class="form-control" id="url" placeholder="Url" value="{$menu.url|default=old('url')}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="icon">图标</label>
+                            <input name="icon" type="text" class="form-control" id="icon" placeholder="图标" value="{$menu.icon|default=old('icon')}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sort">排序</label>
+                            <input name="sort" type="text" class="form-control" id="sort" placeholder="排序" value="{$menu.sort|default=old('sort')}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="remark">备注</label>
+                            <input name="remark" type="text" class="form-control" id="remark" placeholder="备注" value="{$menu.remark|default=old('remark')}">
+                        </div>
+
+                        <!--单选框-->
+                        {include
+                            file="slot/Radio/radio"
+                            type='level'
+                            name="is_menu"
+                            options="[['name'=>'是','value'=>1],['name'=>'否','value'=>0]]"
+                            checked="$menu.is_menu"
+                            title='是否展示' /}
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <a class="btn btn-default" href="javaScript:history.back(-1)">取消</a>
+                        <input type="submit" class="btn btn-info pull-right" value="提交"/>
+                    </div>
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+{/block}
+
+{block name="script"}
+<!--下拉框js-->
+{include file="slot/Select/script"/}
+
+
+<!--单选框js-->
+{include file="slot/Radio/script"/}
+{/block}

@@ -1,0 +1,71 @@
+
+<!--
+    //必传参数
+    url = '/home'                   //跳转链接
+    url_param = ['id'=>2]           //链接参数（数组）
+-->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/jstree.min.js"></script>
+
+<script>
+    $(function() {
+
+        $('#js-tree').jstree({
+            'core' : {
+                "data" : {
+                    "url" : "{:url('[url]',[url_param])}",
+                    "type" : "POST",
+                    "dataType" : "json",
+                }
+            },
+            "checkbox" : {
+                "keep_selected_style" : false
+            },
+            "types" : {
+                "default" : {
+                    "icon" : "{$default_icon |default='fa fa-info-circle'}"
+                }
+            },
+            "plugins" : [ "checkbox","types"]
+        });
+    });
+
+    /**
+     * 默认jstree所需数据
+     */
+    $('#js-tree').on('changed.jstree',function(e,data){
+        var permissions = $(this).jstree(true).get_selected(false);
+
+        $('#js_tree_ids').val(permissions);
+    });
+
+    /**
+     * 获取所有选中项的id并赋值给隐藏域
+     *
+     * @returns {boolean}
+     */
+    function getPermissions() {
+        var permission = $('#js-tree').jstree(true).get_selected(false);
+        var permissions = permission.toString();
+        permissions = getUnd(permissions);
+        // if(permissions.length == 0){
+        //     alert('请选择权限');
+        //     return false;
+        // }
+        console.log(permissions);
+        $("#js_tree_data").val(permissions);
+    }
+
+    /**
+     * 获取所有半选状态的复选框id
+     *
+     * @param permissions
+     * @returns {*}
+     */
+    function getUnd(permissions){
+        $(".jstree-undetermined").each(function(){
+            permissions = permissions + ',' + $(this).parent().parent().attr('id');
+        });
+        return permissions;
+    }
+</script>
